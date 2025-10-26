@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "interactive-feedback": {
+      "command": "uv",
+      "args": ["--directory", "/Users/zhoupatrick/Desktop/interactive-feedback-mcp", "run", "server.py"],
+      "timeout": 600,
+      "autoApprove": ["interactive_feedback"]
+    },
+    "data-sync": {
+      "command": "uv",
+      "args": ["--directory", "/Users/zhoupatrick/Desktop/interactive-feedback-mcp", "run", "data_sync_mcp.py"],
+      "timeout": 600,
+      "autoApprove": [
+        "audience_sync_confirmation",
+        "dmp_data_verification", 
+        "status_update_confirmation",
+        "data_consistency_check",
+        "rollback_confirmation"
+      ]
+    }
+  }
+}
+

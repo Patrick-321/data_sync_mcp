@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "interactive-feedback": {
+      "command": "uv",
+      "args": ["--directory", "/Users/zhoupatrick/Desktop/interactive-feedback-mcp", "run", "server.py"],
+      "timeout": 600,
+      "autoApprove": ["interactive_feedback"]
+    }
+  }
+}
