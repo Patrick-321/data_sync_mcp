@@ -1,4 +1,4 @@
-[English](./README.en.md)
+[English](./README.en.md) | [数据同步专用版本](./DATA_SYNC_README.md)
 
 # 🗣️ 让 cursor 的 500 次请求变成 2500 次 —— 交互式反馈 MCP
 
@@ -6,13 +6,21 @@
 
 通过这种交互式反馈，您可以在 cursor 完成任务之前，之中，之后，向用户提供反馈，获取更详细的上下文从而减少 cursor 次数浪费，实现 500 次当 2500 次用。
 
-**注意：** 该服务器设计为与 MCP 客户端（例如 Claude Desktop、VS Code）一起在本地运行，因为它需要直接访问用户的操作系统以显示通知。
+## 🎯 专业版本
+
+**🚀 [数据同步 MCP 工具](./DATA_SYNC_README.md)** - 专门为**用户肖像和用户群数据同步**工作场景优化：
+- 用户群数据同步确认
+- DMP 数据验证
+- 状态更新确认  
+- 数据一致性检查
+- 回滚操作确认
 
 ## 新增功能
 
 - 美化了弹框样式
 - 支持粘贴图片
 - 支持 markdown 格式，支持 emoji
+- **🎯 数据同步专用版本** - 针对数据同步工作场景优化
 
 ## 🖼️ 示例
 
@@ -35,12 +43,34 @@
 
 ## 🛠️ 工具
 
+### 通用版本
 该服务器通过模型上下文协议 (MCP) 暴露了以下工具：
 
 - `interactive_feedback`：向用户提问并返回用户的答案。可以显示预设选项。
 
+### 数据同步专用版本
+专门为数据同步工作场景优化的工具：
+
+- `audience_sync_confirmation`：用户群数据同步确认
+- `dmp_data_verification`：DMP 数据验证
+- `status_update_confirmation`：状态更新确认
+- `data_consistency_check`：数据一致性检查
+- `rollback_confirmation`：回滚操作确认
+
 ## 📦 安装
 
+### 快速安装（推荐）
+```bash
+# 克隆仓库
+git clone https://github.com/Patrick-321/data_sync_mcp.git
+cd data_sync_mcp
+
+# 一键部署数据同步版本
+chmod +x setup_data_sync_mcp.sh
+./setup_data_sync_mcp.sh
+```
+
+### 手动安装
 1.  **先决条件：**
     - Python 3.10+
     - [uv](https://github.com/astral-sh/uv) (Python 包管理器)。使用以下命令安装：
@@ -49,11 +79,34 @@
       - macOS: `brew install uv`
 2.  **获取代码：**
     - 克隆此仓库：
-      `git clone https://github.com/kele527/interactive-feedback-mcp.git`
+      `git clone https://github.com/Patrick-321/data_sync_mcp.git`
 
 ## ⚙️ 配置
 
-1. 在您的 `claude_desktop_config.json` (Claude Desktop) 或 `mcp.json` (Cursor) 中添加以下配置：
+### 数据同步版本配置（推荐）
+使用 `data_sync_mcp.json` 配置文件：
+
+```json
+{
+  "mcpServers": {
+    "data-sync": {
+      "command": "uv",
+      "args": ["--directory", "/path/to/data_sync_mcp", "run", "data_sync_mcp.py"],
+      "timeout": 600,
+      "autoApprove": [
+        "audience_sync_confirmation",
+        "dmp_data_verification", 
+        "status_update_confirmation",
+        "data_consistency_check",
+        "rollback_confirmation"
+      ]
+    }
+  }
+}
+```
+
+### 通用版本配置
+在您的 `claude_desktop_config.json` (Claude Desktop) 或 `mcp.json` (Cursor) 中添加以下配置：
    **请记住将 `/path/to/interactive-feedback-mcp` 路径更改为您系统中克隆仓库的实际路径。**
 
 ```json
@@ -75,11 +128,22 @@
 
 2. 在您的 AI 助手（在 Cursor Settings > Rules > User Rules 中）的全局自定义规则中添加以下内容：
 
+### 数据同步版本规则（推荐）
+将 `data_sync_rules.md` 中的规则复制到 Cursor 用户规则中。
+
+### 通用版本规则
 > If requirements or instructions are unclear use the tool interactive_feedback to ask clarifying questions to the user before proceeding, do not make assumptions. Whenever possible, present the user with predefined options through the interactive_feedback MCP tool to facilitate quick decisions.
 
 > Whenever you're about to complete a user request, call the interactive_feedback tool to request user feedback before ending the process. If the feedback is empty you can end the request and don't call the tool in loop.
 
 这将确保 cursor 在你提问的问题不明确时以及在将任务即将完成之前始终使用此 MCP 服务器来请求用户反馈。
+
+## 📚 相关文档
+
+- [数据同步 MCP 工具详细文档](./DATA_SYNC_README.md)
+- [数据同步使用示例](./data_sync_example.py)
+- [数据同步用户规则](./data_sync_rules.md)
+- [一键部署脚本](./setup_data_sync_mcp.sh)
 
 ## 🙏 致谢
 
@@ -88,5 +152,7 @@
 由 Pau Oliva ([@pof](https://x.com/pof)) 在 Tommy Tong 的 [interactive-mcp](https://github.com/ttommyth/interactive-mcp) 的启发下进行了增强。
 
 用户界面由 kele527 ([@kele527](https://x.com/jasonya76775253)) 优化
+
+**数据同步专用版本**由 Patrick-321 针对用户肖像和用户群数据同步工作场景专门优化
 
 [![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
